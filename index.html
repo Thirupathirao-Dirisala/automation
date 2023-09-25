@@ -13,8 +13,15 @@
         await pyodide.runPython(`
 import matplotlib.pyplot as plt
 import numpy as np
+import js
 import pandas as pd
-d=pd.read_excel("SEM-3.2.xlsx")
+from pyodide.http import pyfetch
+response = await pyfetch("SEM-3.2.xlsx")
+if response.status == 200:
+    with open("SEM-3.2.xlsx", "wb") as f:
+        f.write(await response.bytes())
+d= pd.read_csv("SEM-3.2.xlsx")
+df=pd.DataFrame(d)
 print(df.columns)
 xpoints = np.array([0, 6])
 ypoints = np.array([0, 250])
