@@ -9,6 +9,8 @@
     </head>
     <body>
         <py-script>
+            await micropip.install("matplotlib")
+            await micropip.install("numpy")
             import matplotlib.pyplot as plt
             import numpy as np
 
