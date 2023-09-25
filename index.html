@@ -1,24 +1,25 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-        <py-env>
-            -matplotlib
-            -numpy
-        </py-env>
-    </head>
-    <body>
-        <py-script>
-            await micropip.install("matplotlib")
-            await micropip.install("numpy")
-            import matplotlib.pyplot as plt
-            import numpy as np
-
-            xpoints = np.array([0, 6])
-            ypoints = np.array([0, 250])
-
-            plt.plot(xpoints, ypoints)
-            plt.show()
-        </py-script>
-    </body>
+<head>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/pyodide/v0.24.0/full/pyodide.js"></script>
+	<script>
+	async function main() {
+        let pyodide = await loadPyodide();
+        await pyodide.loadPackage("micropip");
+        const micropip = pyodide.pyimport("micropip");
+        await micropip.install("matplotlib");
+		await micropip.install("numpy");
+        await pyodide.runPython(`
+import matplotlib.pyplot as plt
+import numpy as np
+xpoints = np.array([0, 6])
+ypoints = np.array([0, 250])
+plt.plot(xpoints, ypoints)
+plt.show()
+        `);
+    }
+    main();
+	</script>
+</head>
+<body>
+</body>
 </html>
