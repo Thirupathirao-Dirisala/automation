@@ -1,6 +1,6 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/pyodide/v0.24.0/full/pyodide.js"></script>
 	<script>
 	async function main() {
@@ -8,30 +8,27 @@
         await pyodide.loadPackage("micropip");
         const micropip = pyodide.pyimport("micropip");
         await micropip.install("matplotlib");
-	await micropip.install("numpy");
-	await micropip.install("pandas");
+		await micropip.install("numpy");
         await pyodide.runPython(`
 import matplotlib.pyplot as plt
 import numpy as np
 import js
-import pandas as pd
-from pyodide.http import pyfetch
-response = await pyfetch("SEM-3.2.xlsx")
-if response.status == 200:
-    with open("SEM-3.2.xlsx", "wb") as f:
-        f.write(await response.bytes())
-d= pd.read_csv("SEM-3.2.xlsx")
-df=pd.DataFrame(d)
-print(df.columns)
-xpoints = np.array([0, 6])
-ypoints = np.array([0, 250])
-plt.plot(xpoints, ypoints)
+num=js.document.getElementById("txt").value
+js.document.getElementById("par").innerHTML=num
+x=["CD","ML","MAD","FSD"]
+y=[98,84,100,87,]
+plt.xlabel('Subjects')
+plt.ylabel("marks")
+plt.bar(x,y)
 plt.show()
         `);
     }
-    main();
 	</script>
 </head>
 <body>
+<input type="text" id="txt"/>
+
+<button onclick="main()">Submit</button>
+<p id="par"></p>
 </body>
 </html>
