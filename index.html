@@ -1,35 +1,44 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <py-env>
-            - matplotlib
-    </py-env>
-    </head>
-    <body>
-        <div id="matplotlib-lineplot"></div>
-        <py-script output="matplotlib-lineplot">
-            # Python Code
-           
-            # importing the matplotlib library
-            import matplotlib.pyplot as plt
-            fig, ax = plt.subplots()
-            # x axis
-            x = ["Python", "C++", "JavaScript", "Golang"]
-            # y axis
-            y = [10, 5, 9, 7]
-            plt.plot(x, y, marker='o', linestyle='-', color='b')
-            # Naming the x-label
-            plt.xlabel('Language')
-            # Naming the y-label
-            plt.ylabel('Score')
-            # Naming the title of the plot
-            plt.title('Language vs Score')
-            fig
-         </py-script>
-    </body>
-</html>
+ <py-config>
+                    packages = [
+                      "matplotlib"
+                    ]
+                    plugins = [
+                      "https://pyscript.net/latest/plugins/python/py_tutor.py"
+                    ]
+                </py-config>
+
+                <script type="py">
+                    import matplotlib.pyplot as plt
+                    import matplotlib.tri as tri
+                    import numpy as np
+
+                    # First create the x and y coordinates of the points.
+                    n_angles = 36
+                    n_radii = 8
+                    min_radius = 0.25
+                    radii = np.linspace(min_radius, 0.95, n_radii)
+
+                    angles = np.linspace(0, 2 * np.pi, n_angles, endpoint=False)
+                    angles = np.repeat(angles[..., np.newaxis], n_radii, axis=1)
+                    angles[:, 1::2] += np.pi / n_angles
+
+                    x = (radii * np.cos(angles)).flatten()
+                    y = (radii * np.sin(angles)).flatten()
+                    z = (np.cos(radii) * np.cos(3 * angles)).flatten()
+
+                    # Create the Triangulation; no triangles so Delaunay triangulation created.
+                    triang = tri.Triangulation(x, y)
+
+                    # Mask off unwanted triangles.
+                    triang.set_mask(np.hypot(x[triang.triangles].mean(axis=1),
+                                             y[triang.triangles].mean(axis=1))
+                                    < min_radius)
+
+                    fig1, ax1 = plt.subplots()
+                    ax1.set_aspect('equal')
+                    tpc = ax1.tripcolor(triang, z, shading='flat')
+                    fig1.colorbar(tpc)
+                    ax1.set_title('tripcolor of Delaunay triangulation, flat shading')
+
+                    display(fig1, target="mpl")
+                </script>
