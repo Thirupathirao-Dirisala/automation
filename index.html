@@ -1,34 +1,21 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/pyodide/v0.24.0/full/pyodide.js"></script>
-	<script>
-	async function main() {
-        let pyodide = await loadPyodide();
-        await pyodide.loadPackage("micropip");
-        const micropip = pyodide.pyimport("micropip");
-        await micropip.install("matplotlib");
-		await micropip.install("numpy");
-        await pyodide.runPython(`
-import matplotlib.pyplot as plt
-import numpy as np
-import js
-num=js.document.getElementById("txt").value
-js.document.getElementById("par").innerHTML=num
-x=["CD","ML","MAD","FSD"]
-y=[98,84,100,87,]
-plt.xlabel('Subjects')
-plt.ylabel("marks")
-plt.bar(x,y)
-plt.show()
-        `);
-    }
-	</script>
-</head>
-<body>
-<input type="text" id="txt"/>
-
-<button onclick="main()">Submit</button>
-<p id="par"></p>
-</body>
+ <html lang="en">  
+  <head>  
+    <meta charset="utf-8" />  
+    <meta name="viewport" content="width=device-width, initial-scale=1" />  
+    <title>external modules</title>  
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />  
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>  
+  </head>  
+  <body>
+  <py-env>  
+   - pandas	
+  </py-env>   
+  <py-script> 
+import pandas as pd
+d=pd.read_excel("SEM-3.2.xlsx")
+df=pd.DataFrame(d)
+print(df)
+  </py-script>
+  </body>  
 </html>
