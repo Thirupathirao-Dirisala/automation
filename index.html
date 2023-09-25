@@ -2,10 +2,21 @@
     <head>
         <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
         <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+        <py-env>
+            -matplotlib
+            -numpy
+        </py-env>
     </head>
     <body>
         <py-script>
-            print("hello")
+            import matplotlib.pyplot as plt
+            import numpy as np
+
+            xpoints = np.array([0, 6])
+            ypoints = np.array([0, 250])
+
+            plt.plot(xpoints, ypoints)
+            plt.show()
         </py-script>
     </body>
 </html>
